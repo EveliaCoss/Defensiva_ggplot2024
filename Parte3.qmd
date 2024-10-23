@@ -1,0 +1,161 @@
+# **Programación defensiva**
+
+Es importante garantizar que las funciones **se utilicen solo para los propósitos previstos**. Este concepto se llama *programación defensiva*, y consiste en verificar que se cumplan las condiciones necesarias para que la **función funcione correctamente**. Si alguna condición falla, se debe generar un **error** para prevenir comportamientos inesperados.
+
+Vamos a usar las funciones `stop()` y `stopifnot()` para detener el código cuando hay un error.
+
+Para más información sobre `stopifnot()` puedes leer su [manual](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/stopifnot).
+
+## **Usando `stop()` con `if()`**
+
+El argumento *temp* debe ser un valor **numeric**. Para crear un *error*, podemos usar la función `stop()`. Por ejemplo, dado que el argumento *temp* debe ser un **vector numeric**, podríamos probarlo con un condicional `if()` y devolver un *error* si la condición no se cumple. Podríamos agregar esto a nuestra función de la siguiente manera:
+
+```{r}
+fahr_to_kelvin <- function(temp) {
+  if (!is.numeric(temp)) {
+    stop("temp must be a numeric vector.") # condiciones
+  }
+  kelvin <- ((temp - 32) * (5 / 9)) + 273.15
+  return(kelvin)
+}
+```
+
+### Verificación / Realizar pruebas
+
+```{r}
+fahr_to_kelvin(temp = 32)
+```
+
+```{r, eval=FALSE}
+fahr_to_kelvin(temp = "A")
+# Error in fahr_to_kelvin(temp = "A") : temp must be a numeric vector.
+```
+
+### **Probando condiciones con `stopifnot()`**
+
+```{r}
+fahr_to_kelvin <- function(temp) {
+  stopifnot(is.numeric(temp)) # condiciones
+  kelvin <- ((temp - 32) * (5 / 9)) + 273.15
+  return(kelvin)
+}
+```
+
+### Verificación / Realizar pruebas
+
+```{r}
+fahr_to_kelvin(temp = 32)
+```
+
+```{r, eval=FALSE}
+fahr_to_kelvin(temp = as.factor(32))
+# Error in fahr_to_kelvin(temp = as.factor(32)) :
+# is.numeric(temp) is not TRUE
+```
+
+## **Usando `warning()` y `message()` con `if()`**
+
+```{r}
+squareX <- function(x) {
+    if (is.character(x)) {
+        warning("Converting x to numeric")
+        x <- as.numeric(x)
+    } else {
+        # the type checking done here is of course very incomplete
+        message("x appears to be numeric")
+    }
+    x ^ 2 
+}
+```
+
+#### Verificación / Realizar pruebas
+
+```{r}
+squareX("4")
+```
+
+```{r}
+squareX(4)
+```
+
+## **Usando el paquete `assertthat`**
+
+Instalar el paquete:
+
+```{r, eval=FALSE}
+install.packages("assertthat")
+```
+
+El paquete `assertthat` realiza lo mismo que `stopifnot`.
+
+Ejemplos:
+
+```{r, eval=FALSE}
+library(assertthat) ## Mensajes de error
+x <- 1:10
+stopifnot(is.character(x))
+# Error: is.character(x) is not TRUE
+assert_that(is.character(x))
+# Error: x is not a character vector
+assert_that(length(x) == 5)
+# Error: length(x) not equal to 5
+assert_that(is.numeric(x))
+# [1] TRUE
+```
+
+Para más información sobre `assertthat` puedes leer su [manual](https://www.r-project.org/nosvn/pandoc/assertthat.html#:~:text=assertthat%20provides%20a%20drop%20in,while%20producing%20useful%20error%20messages.).
+
+```{r}
+foo_message <- function(x) {
+    assertthat::assert_that(x == 1, msg = "x must always be 1")
+    "yay"
+} 
+# verficacion
+foo_message(1)
+```
+
+# Scripts
+
+Un script es una colección de varias instrucciones de R escritas en un archivo. La extensión de los script en R es `.r` o `.R`. En los scripts podemos colocar comentarios, paquetes, instrucciones de tal forma que pueda ser ejecutado sin problemas.
+
+### **Guardar funciones, Opcion A**
+
+Cargando la función almacenada en un RData
+
+```{r, eval=FALSE}
+squareX <- function(x) {
+    if (is.character(x)) {
+        warning("Converting x to numeric")
+        x <- as.numeric(x)
+    } else {
+        # the type checking done here is of course very incomplete
+        message("x appears to be numeric")
+    }
+    x ^ 2 
+}
+# Guardar
+save(squareX, file="./squareX.Rdata")
+rm(squareX) # eliminar funcion
+```
+
+Cargar en el ambiente de RStudio
+
+```{r, eval=FALSE}
+load("./squareX.Rdata")
+```
+
+### **Guardar funciones, Opcion B**
+
+Si has estado escribiendo estas funciones en un script de R aparte (¡una buena idea!), puedes cargar las funciones en nuestra sesión de R usando la función `source()`, en caso de no estar el script en nuestro directorio de trabajo debemos fijarlo o poner la ruta completa al script.
+
+```{r, eval=FALSE}
+source("squareX_function.R")
+```
+
+![](img/meme3.jpg){fig-align="center"}
+
+## Material suplementario
+
+-   [Software Carpentry - Programación defensiva](https://swcarpentry.github.io/r-novice-gapminder-es/10-functions.html)
+
+-   Haydee tutorial: [Temas Selectos de Análisis Numérico y Computación Científica: Computo científico para el análisis de datos](https://haydeeperuyero.github.io/Computo_Cientifico/)

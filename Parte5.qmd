@@ -1,0 +1,19 @@
+# Ejercicio  {.unnumbered}
+
+::: {.callout-note icon="false"}
+## Tarea
+
+Trabajo individual o en equipo (3 personas):
+
+1.  Seleccionar uno de los [Datasets](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html) precargados en R.
+
+2.  Analiza los datos y genera 3 preguntas que puedas contestar con las variables que tienes.
+
+3.  Genera un script completo que nos conteste las preguntas realizadas y nos de graficas de cada uno.
+
+    NOTA: No olvides agregar la programacion defensiva y todo lo visto en clase.
+
+4.  Genera una exposicion breve de 15 min en total.
+
+5.  Exposicion el **6 de diciembre**
+:::

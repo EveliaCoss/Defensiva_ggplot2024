@@ -1,0 +1,141 @@
+# **ggplot2**
+
+¡Empecemos por lo básico! El paquete `ggplot2` se basa en la Gramática de los Gráficos (GG), que es un marco para la visualización de datos que disecciona cada componente de un gráfico en **componentes individuales**, creando **capas distintas**. Utilizando el sistema GG, podemos construir gráficos paso a paso para obtener resultados flexibles y personalizables.
+
+![](img/Layers_ggplot.png){fig-align="center"}
+
+Las capas GG tienen nombres específicos que verás a lo largo de esta seccion:
+
+![](img/gglayers.png){fig-align="center"}
+
+Para hacer un ggplot, las capas de datos y mapas son requisitos básicos, mientras que las otras capas son para personalización adicional. Las capas que «no son necesarias» siguen siendo importantes, pero podrás generar un gráfico básico sin ellas.
+
+## **Desglose de las capas comunes**
+
+A continuación se presenta un desglose de cada una de las capas de la GG y los argumentos comunes de cada una de ellas que pueden servir de referencia:
+
+-   **Datos:**
+    -   `sus datos`, en formato `tidy` o `dataframe`, proporcionarán los ingredientes para su trazado
+    -   utilice las técnicas `dplyr` para preparar los datos para un formato de trazado óptimo
+    -   por lo general, esto significa que debe tener una fila por cada observación que desea trazar
+-   [Estética](https://ggplot2-book.org/annotations)**(Aesthetics / aes)**, para hacer visibles los datos
+    -   `x`, `y`: variable a lo largo de los ejes x e y.
+    -   `colour`: color de las variables según los datos.
+    -   `fill`: color interior de la zona o relleno.
+    -   `group`: a qué grupo pertenece una geom.
+    -   `shape`: la figura utilizada para trazar un punto.
+    -   `linetype`: tipo de línea utilizada (sólida, discontinua, etc.).
+    -   `size`: escala de tamaño para una dimensión extra
+    -   `alpha`: transparencia del objeto geométrico
+-   [Objetos geométricos](https://ggplot2-book.org/individual-geoms)(geoms - determina el tipo de trazado)
+    -   `geom_point()`: gráfico de dispersión
+    -   `geom_line()`: líneas que conectan puntos aumentando el valor de x
+    -   `geom_path()`: líneas que conectan puntos en secuencia de aparición
+    -   `geom_boxplot()`: gráfico de caja y bigotes para variables categóricas
+    -   `geom_bar()`: gráficos de barras para el eje x categórico
+    -   `geom_histogram()`: histograma para eje x continuo
+    -   `geom_violin()`: núcleo de distribución de la dispersión de datos
+    -   `geom_smooth()`: línea de función basada en datos
+-   [**Facetas**](https://r-charts.com/es/ggplot2/facetas/)**:**
+    -   `facet_wrap()`: una variable discreta.
+    -   `facet_grid()`: dos variables discretas.
+-   [**Estadísticas**](https://ggplot2-book.org/statistical-summaries)**:**
+    -   similar a geoms, pero computada
+    -   muestran medias, recuentos y otros resúmenes estadísticos de los datos
+-   [Coordenadas](https://ggplot2-book.org/coord)- ajuste de datos en una página
+    -   `coord_cartesian():` para establecer límites
+    -   `coord_polar():` para gráficos circulares
+    -   `coord_map():` para diferentes proyecciones cartográficas
+    -   `coord_flip():` voltear axis.
+-   [**Temas**](https://ggplot2.tidyverse.org/reference/ggtheme.html)**:**
+    -   parámetros visuales generales
+    -   fuentes, colores, formas, contornos
+
+Más información en en el [Workshop 3: Introduction to data visualisation with ggplot2](https://r.qcbs.ca/workshop03/book-en/)
+
+### Paso 7. Integrar todo y generar un script y funcion
+
+```{r}
+# paquetes
+library(dplyr)
+library(ggplot2)
+library(gapminder)
+
+# Funcion para analizar la esperanza de vida
+analizar_esperanza_vida <- function(paises = NULL, anio_inicio = NULL, anio_fin = NULL) {
+  # Filtrar por países (si se especifican)
+  datos_filtrados <- gapminder %>%
+    # Verificar Si los paises estan en el dataset
+     filter(if (!is.null(paises)) {
+        message("Extraer informacion del pais")
+       # entonces
+        country %in% paises
+      } else {
+        # Se da un TRUE, cuando no tenemos el pais en los datos. Lo que significa que no se realiza ningún filtrado, y se mantienen todos los países.
+        warning("No se encuentra el pais")
+        TRUE
+      }) %>%
+    # Verificar que existe el year de inicio
+    filter(if (!is.null(anio_inicio)) {
+        message("Extraer informacion del pais")
+       # entonces
+        year >= anio_inicio
+      } else {
+        # Se da un TRUE, cuando no tenemos el ano en los datos. Lo que significa que no se realiza ningún filtrado, y se mantienen todos los anos.
+        warning("No se encuentra el pais")
+        TRUE
+      }) %>%
+      # Verificar que existe el year de fin
+    filter(if (!is.null(anio_fin)) {
+        message("Extraer informacion del pais")
+       # entonces
+        year <= anio_fin
+      } else {
+        # Se da un TRUE, cuando no tenemos el pais en los datos. Lo que significa que no se realiza ningún filtrado, y se mantienen todos los países.
+        warning("No se encuentra el pais")
+        TRUE
+      })
+  
+  # Verificar si hay datos después de filtrar
+  if (nrow(datos_filtrados) == 0) {
+    stop("No hay datos disponibles para los criterios especificados.")
+  }
+  
+  # Resumen de la esperanza de vida
+  resumen_vida <- datos_filtrados %>%
+    group_by(country) %>%
+    summarise(esperanza_media = mean(lifeExp),
+              max_esperanza = max(lifeExp),
+              min_esperanza = min(lifeExp)) %>%
+    arrange(desc(esperanza_media))
+  
+  print("Resumen de la esperanza de vida:")
+  print(resumen_vida)
+  
+  # Gráfico de esperanza de vida a lo largo del tiempo
+  ggplot(datos_filtrados, aes(x = year, y = lifeExp, color = country)) +
+    geom_line() +
+    labs(title = "Evolución de la esperanza de vida",
+         x = "Año",
+         y = "Esperanza de vida") +
+    theme_minimal()
+}
+
+```
+
+Ejecuta el script:
+
+```{r}
+# Uso de la función con un ejemplo
+analizar_esperanza_vida(paises = c("Mexico", "Canada", "Japan"), anio_inicio = 1950, anio_fin = 2000)
+```
+
+::: {.callout-note icon="false"}
+## **Ejercicios**
+
+Te invitamos a que corras el ejercicio propuesto en el script [ggplo2_R_Ladies_Morelia\_.R](https://github.com/R-Ladies-Morelia/GGplotShiny/blob/main/ggplot2_R_ladies_Morelia/ggplo2_R_Ladies_Morelia_.R) por Fernanda Miron.
+:::
+
+## Material suplementario
+
+-   [ggplot2: Elegant Graphics for Data Analysis (3e)](https://ggplot2-book.org/)
