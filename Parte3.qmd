@@ -1,4 +1,4 @@
-# **Programación defensiva**
+# Programación defensiva
 
 Es importante garantizar que las funciones **se utilicen solo para los propósitos previstos**. Este concepto se llama *programación defensiva*, y consiste en verificar que se cumplan las condiciones necesarias para que la **función funcione correctamente**. Si alguna condición falla, se debe generar un **error** para prevenir comportamientos inesperados.
 

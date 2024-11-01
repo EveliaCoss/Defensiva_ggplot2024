@@ -1,4 +1,4 @@
-# Buenas prácticas en **Bioinformática**
+# Buenas prácticas en Bioinformática
 
 Notas personales recabadas a partir de los tutoriales y ejemplos 😊. Espero que les funcione 💜
 

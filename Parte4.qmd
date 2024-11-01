@@ -1,6 +1,6 @@
-# **ggplot2**
+# ggplot2
 
-¡Empecemos por lo básico! El paquete `ggplot2` se basa en la Gramática de los Gráficos (GG), que es un marco para la visualización de datos que disecciona cada componente de un gráfico en **componentes individuales**, creando **capas distintas**. Utilizando el sistema GG, podemos construir gráficos paso a paso para obtener resultados flexibles y personalizables.
+¡Empecemos por lo básico! El paquete `ggplot2` se basa en la **Gramática de los Gráficos (GG)**, que es un marco para la visualización de datos que disecciona cada componente de un gráfico en **componentes individuales**, creando **capas distintas**. Utilizando el sistema GG, podemos construir gráficos paso a paso para obtener resultados flexibles y personalizables.
 
 ![](img/Layers_ggplot.png){fig-align="center"}
 
@@ -131,7 +131,7 @@ analizar_esperanza_vida(paises = c("Mexico", "Canada", "Japan"), anio_inicio = 1
 ```
 
 ::: {.callout-note icon="false"}
-## **Ejercicios**
+## **Ejercicio 2 (20 min)**
 
 Te invitamos a que corras el ejercicio propuesto en el script [ggplo2_R_Ladies_Morelia\_.R](https://github.com/R-Ladies-Morelia/GGplotShiny/blob/main/ggplot2_R_ladies_Morelia/ggplo2_R_Ladies_Morelia_.R) por Fernanda Miron.
 :::

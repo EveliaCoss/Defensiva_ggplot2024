@@ -1,4 +1,4 @@
-# **El ABC de las funciones**
+# El ABC de las funciones
 
 Las funciones reúnen una secuencia de operaciones como un todo, almacenando para su uso continuo. Las funciones proveen:
 
@@ -335,11 +335,11 @@ gap %>%
 ```
 
 ::: {.callout-note icon="false"}
-## Ejercicios
+## Ejercicio 1 (20 min)
 
-1.  Calcula la media la esperanza de vida por continente y año y preséntala como un data.frame. ¿Cuál continente tuvo la mayor y menor esperanza de vida en el año 1952 y 2007?
+1.  Apartir de los datos de gapminder, calcula la media la esperanza de vida por continente y año y preséntala como un data.frame. ¿Cuál continente tuvo la mayor y menor esperanza de vida en el año 1952 y 2007?
 
-2.  Carga la base de datos `iris`, y crea un data.frame con la media, el valor máximo y mínimo de cada una de las variables agrupado por especie.
+2.  Empleando el dataset de `iris`, crea un data.frame con la media, el valor máximo y mínimo de cada una de las variables agrupado por especie.
 
 3.  Explora la [página](https://vincentarelbundock.github.io/Rdatasets/articles/data.html) y busca una base de datos donde puedas aplicar las funciones anteriores y que tenga sentido lo que estás presentando de resultados.
 :::
