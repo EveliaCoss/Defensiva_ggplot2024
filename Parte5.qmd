@@ -1,7 +1,7 @@
-# Ejercicio  {.unnumbered}
+# Proyecto {.unnumbered}
 
 ::: {.callout-note icon="false"}
-## Tarea
+## Instrucciones:
 
 Trabajo individual o en equipo (3 personas):
 
